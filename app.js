@@ -12,6 +12,15 @@ const ItemCtrl = (function(){
     this.calories = calories;
   }
   // Data structure / State
+  const data = {
+    items: [
+      {id: 0, name:"Hamburger", calories:1200},
+      {id: 1, name:"Fried", calories:800},
+      {id: 2, name:"Soda", calories:950}
+    ],
+    currentItem: null,
+    totalCalories: 0
+  }
 })();
 
 // UI Controller
