@@ -15,7 +15,7 @@ const ItemCtrl = (function(){
   const data = {
     items: [
       {id: 0, name:"Hamburger", calories:1200},
-      {id: 1, name:"Fried", calories:800},
+      {id: 1, name:"French Fries", calories:800},
       {id: 2, name:"Soda", calories:950}
     ],
     currentItem: null,
@@ -39,7 +39,20 @@ const ItemCtrl = (function(){
 // UI Controller
 const UICtrl =  (function(){
   // Public methods
-  return {}
+  return {
+    // Following function is responsible for inserting the items that we fetched from the ItemCtrl inside the html's <ul>
+    populateItemsList: function(items){
+      let html = '';
+
+      // Iterate over each item to use dynamic data on them
+      items.forEach(function(item){
+        html += `<li class="collection-item" id="item-${item.id}"><strong>${item.name}:</strong> <em>${item.calories} calories</em><a href="#" class="secondary-content"><i class="fa fa-pencil"></i></a></li>`
+      })
+      
+      // Insert list items inside HMTL
+      document.querySelector('#item-list').innerHTML = html;
+    }
+  }
 })();
 
 // App Controller
@@ -48,8 +61,11 @@ const App = (function(ItemCtrl, UICtrl){
   // Basically, init contains anything that we need to run right away when the app loads
   return {
     init: function(){
-      // Fetching items from ItemCtrl
+      // Fetching items from Data Structure
       const items = ItemCtrl.getItems();
+
+      // Populate list with items
+      UICtrl.populateItemsList(items);
     }
 
   }
