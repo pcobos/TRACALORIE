@@ -21,17 +21,36 @@ const ItemCtrl = (function(){
     currentItem: null,
     totalCalories: 0
   }
+
+  // Since the previous data is private, we need to return it in order to access it for testing purposes
+
+  // Public methods
+  return {
+    logData: function(){
+      return data;
+    }
+  }
 })();
 
 // UI Controller
 const UICtrl =  (function(){
-
+  // Public methods
+  return {}
 })();
 
 // App Controller
 const App = (function(ItemCtrl, UICtrl){
+  // Main app controller will return one single function called init
+  // Basically, init contains anything that we need to run right away when the app loads
+  return {
+    init: function(){
+      console.log('Initializing app..');
+    }
+  }
+
 
 })(ItemCtrl, UICtrl);
 
 // First thing to initialize the controllers is to use a IIFE Function (Immediately Invoked Function Expressions)
 
+App.init();
