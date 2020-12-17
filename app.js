@@ -26,6 +26,10 @@ const ItemCtrl = (function(){
 
   // Public methods
   return {
+    // Following function is for getting the items and passing them to our App controller
+    getItems: function(){
+      return data.items;
+    },
     logData: function(){
       return data;
     }
@@ -44,13 +48,15 @@ const App = (function(ItemCtrl, UICtrl){
   // Basically, init contains anything that we need to run right away when the app loads
   return {
     init: function(){
-      console.log('Initializing app..');
+      // Fetching items from ItemCtrl
+      const items = ItemCtrl.getItems();
     }
+
   }
 
 
 })(ItemCtrl, UICtrl);
 
 // First thing to initialize the controllers is to use a IIFE Function (Immediately Invoked Function Expressions)
-
+ 
 App.init();
