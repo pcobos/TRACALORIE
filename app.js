@@ -54,7 +54,12 @@ const UICtrl =  (function(){
       
       // Insert list items inside HMTL
       document.querySelector(UISelectors.itemList).innerHTML = html;
-    }
+    },
+
+    // Access UISelectors from outside
+    accessUISelectors: function(){
+      return UISelectors;
+    } 
   }
 })();
 
