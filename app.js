@@ -38,6 +38,9 @@ const ItemCtrl = (function(){
 
 // UI Controller
 const UICtrl =  (function(){
+  const UISelectors = {
+    itemList: '#item-list'
+  }
   // Public methods
   return {
     // Following function is responsible for inserting the items that we fetched from the ItemCtrl inside the html's <ul>
@@ -50,13 +53,19 @@ const UICtrl =  (function(){
       })
       
       // Insert list items inside HMTL
-      document.querySelector('#item-list').innerHTML = html;
+      document.querySelector(UISelectors.itemList).innerHTML = html;
     }
   }
 })();
 
 // App Controller
 const App = (function(ItemCtrl, UICtrl){
+  // Load event listeners
+  const loadEventListeners = function(){
+
+  }
+
+  // Public Methods
   // Main app controller will return one single function called init
   // Basically, init contains anything that we need to run right away when the app loads
   return {
