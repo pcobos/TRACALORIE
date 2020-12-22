@@ -30,9 +30,16 @@ const ItemCtrl = (function(){
     getItems: function(){
       return data.items;
     },
+    addItem: function(){
+      // Add logic for ID
+      // Convert calories to integer
+      // Create new item with info from inputs
+      // Push item to data structure
+    },
+    // Method to check inner workings of data structure
     logData: function(){
       return data;
-    }
+    },
   }
 })();
 
@@ -58,7 +65,7 @@ const UICtrl =  (function(){
       // Insert list items inside HMTL
       document.querySelector(UISelectors.itemList).innerHTML = html;
     },
-
+    // Get input values
     getItemInput: function(){
       return {
         name:document.querySelector(UISelectors.itemName).value,
@@ -84,9 +91,13 @@ const App = (function(ItemCtrl, UICtrl){
 
   // Item add submit function
   const itemAddSubmit = function(e){
-
+    // Get form input from UI Controller
     const input = UICtrl.getItemInput();
-    console.log(input)
+
+    // Check if inputs are empty
+
+    // Add item to data structure (Item Controller's responsibility)
+
     e.preventDefault();
   }
 
