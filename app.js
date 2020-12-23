@@ -30,11 +30,20 @@ const ItemCtrl = (function(){
     getItems: function(){
       return data.items;
     },
-    addItem: function(){
+    addItem: function(name, calories){
       // Add logic for ID
+      let ID;
+      if (data.items.length > 0){
+        ID = data.items[data.items.length - 1].id + 1;
+      } else {
+        ID = 0;
+      }
       // Convert calories to integer
+      const numCalories = parseInt(calories);
       // Create new item with info from inputs
-      // Push item to data structure
+      newItem = new Item(ID, name, numCalories); 
+      // Push item to data structure.
+      console.log(newItem);
     },
     // Method to check inner workings of data structure
     logData: function(){
@@ -93,10 +102,13 @@ const App = (function(ItemCtrl, UICtrl){
   const itemAddSubmit = function(e){
     // Get form input from UI Controller
     const input = UICtrl.getItemInput();
-
     // Check if inputs are empty
-
-    // Add item to data structure (Item Controller's responsibility)
+    if (input.name !== '' && input.calories !== '') {
+      // Add item to data structure (Item Controller's responsibility)
+      const newItem = ItemCtrl.addItem(input.name, input.calories);
+    } else {
+      alert("Meal name & calories can't be empty");
+    }
 
     e.preventDefault();
   }
