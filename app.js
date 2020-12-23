@@ -39,11 +39,11 @@ const ItemCtrl = (function(){
         ID = 0;
       }
       // Convert calories to integer
-      const numCalories = parseInt(calories);
+      calories = parseInt(calories);
       // Create new item with info from inputs
-      newItem = new Item(ID, name, numCalories); 
+      newItem = new Item(ID, name, calories); 
       // Push item to data structure.
-      console.log(newItem);
+      data.items.push(newItem);
     },
     // Method to check inner workings of data structure
     logData: function(){
