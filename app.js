@@ -30,6 +30,7 @@ const ItemCtrl = (function(){
     getItems: function(){
       return data.items;
     },
+
     addItem: function(name, calories){
       // Add logic for ID
       let ID;
@@ -38,13 +39,20 @@ const ItemCtrl = (function(){
       } else {
         ID = 0;
       }
+      
       // Convert calories to integer
       calories = parseInt(calories);
+      
       // Create new item with info from inputs
-      newItem = new Item(ID, name, calories); 
+      newMeal = new Item(ID, name, calories); 
+      
       // Push item to data structure.
-      data.items.push(newItem);
+      data.items.push(newMeal);
+
+      // Returning the new meal for later use in variables
+      return newMeal;
     },
+
     // Method to check inner workings of data structure
     logData: function(){
       return data;
@@ -65,7 +73,7 @@ const UICtrl =  (function(){
     // Following function is responsible for inserting the items that we fetched from the ItemCtrl inside the html's <ul>
     populateItemsList: function(items){
       let html = '';
-
+      
       // Iterate over each item to use dynamic data on them
       items.forEach(function(item){
         html += `<li class="collection-item" id="item-${item.id}"><strong>${item.name}:</strong> <em>${item.calories} calories</em><a href="#" class="secondary-content"><i class="fa fa-pencil"></i></a></li>`
@@ -74,6 +82,7 @@ const UICtrl =  (function(){
       // Insert list items inside HMTL
       document.querySelector(UISelectors.itemList).innerHTML = html;
     },
+
     // Get input values
     getItemInput: function(){
       return {
@@ -81,22 +90,25 @@ const UICtrl =  (function(){
         calories:document.querySelector(UISelectors.itemCalories).value
       }
     },
+
     // Add item to UI list
     addListItem: function(item){
       // create a new li
       const li = document.createElement('li');
       // add className to li item
       li.className = 'collection-item';
+
       // add id to li item
       li.id = `item-${item.id}`;
+
       // add HTML (content inside the li)
       li.innerHTML = `<strong>${item.name}:</strong> <em>${item.calories} calories</em>
       <a href="#" class="secondary-content">
         <i class="fa fa-pencil"></i>
       </a>`
+
       // insert new li element to the end of the itemsList
       document.querySelector(UISelectors.itemList).insertAdjacentElement("beforeend", li);
-      // console.log(li);
     },
     // Access UISelectors from outside
     accessUISelectors: function(){
@@ -107,10 +119,12 @@ const UICtrl =  (function(){
 
 // App Controller
 const App = (function(ItemCtrl, UICtrl){
-  // Load event listeners
+    // Load event listeners
   const loadEventListeners = function(){
+    
     // Get UI selectors
     const UISelectors = UICtrl.accessUISelectors();
+    
     // Add item event
     document.querySelector(UISelectors.addBtn).addEventListener('click', itemAddSubmit);
   }
@@ -119,16 +133,17 @@ const App = (function(ItemCtrl, UICtrl){
   const itemAddSubmit = function(e){
     // Get form input from UI Controller
     const input = UICtrl.getItemInput();
+    
     // Check if inputs are empty
     if (input.name !== '' && input.calories !== '') {
       // Add item to data structure (Item Controller's responsibility)
       const newItem = ItemCtrl.addItem(input.name, input.calories);
       // Add item to UI list
       UICtrl.addListItem(newItem);
+      // console.log(newItem);
     } else {
       alert("Meal name & calories can't be empty");
     }
-
 
     e.preventDefault();
   }
