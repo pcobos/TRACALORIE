@@ -14,9 +14,9 @@ const ItemCtrl = (function(){
   // Data structure / State
   const data = {
     items: [
-      {id: 0, name:"Hamburger", calories:1200},
-      {id: 1, name:"French Fries", calories:800},
-      {id: 2, name:"Soda", calories:950}
+      // {id: 0, name:"Hamburger", calories:1200},
+      // {id: 1, name:"French Fries", calories:800},
+      // {id: 2, name:"Soda", calories:950}
     ],
     currentItem: null,
     totalCalories: 0
@@ -93,6 +93,7 @@ const UICtrl =  (function(){
 
     // Add item to UI list
     addListItem: function(item){
+      document.querySelector(UISelectors.itemList).style.display = 'block';
       // create a new li
       const li = document.createElement('li');
       // add className to li item
@@ -110,6 +111,18 @@ const UICtrl =  (function(){
       // insert new li element to the end of the itemsList
       document.querySelector(UISelectors.itemList).insertAdjacentElement("beforeend", li);
     },
+
+    //Clear Input function
+    clearInput: () => {
+      document.querySelector(UISelectors.itemName).value = '';
+      document.querySelector(UISelectors.itemCalories).value = '';
+    },
+
+    // Clear UL line
+    hideList: () => {
+      document.querySelector(UISelectors.itemList).style.display = 'none';
+    },
+
     // Access UISelectors from outside
     accessUISelectors: function(){
       return UISelectors;
@@ -145,6 +158,9 @@ const App = (function(ItemCtrl, UICtrl){
       alert("Meal name & calories can't be empty");
     }
 
+    // Calling UICtrl function for clearing inputs
+    UICtrl.clearInput();
+
     e.preventDefault();
   }
 
@@ -156,8 +172,15 @@ const App = (function(ItemCtrl, UICtrl){
       // Fetching items from Data Structure
       const items = ItemCtrl.getItems();
 
-      // Populate list with items
-      UICtrl.populateItemsList(items);
+      if (items.length == 0 ){
+        UICtrl.hideList();
+      } else {
+        // Populate list with items
+        UICtrl.populateItemsList(items);
+      }
+      
+
+      // Calling load even listeners function
       loadEventListeners();
     }
 
