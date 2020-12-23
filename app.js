@@ -81,6 +81,23 @@ const UICtrl =  (function(){
         calories:document.querySelector(UISelectors.itemCalories).value
       }
     },
+    // Add item to UI list
+    addListItem: function(item){
+      // create a new li
+      const li = document.createElement('li');
+      // add className to li item
+      li.className = 'collection-item';
+      // add id to li item
+      li.id = `item-${item.id}`;
+      // add HTML (content inside the li)
+      li.innerHTML = `<strong>${item.name}:</strong> <em>${item.calories} calories</em>
+      <a href="#" class="secondary-content">
+        <i class="fa fa-pencil"></i>
+      </a>`
+      // insert new li element to the end of the itemsList
+      document.querySelector(UISelectors.itemList).insertAdjacentElement("beforeend", li);
+      // console.log(li);
+    },
     // Access UISelectors from outside
     accessUISelectors: function(){
       return UISelectors;
@@ -106,9 +123,12 @@ const App = (function(ItemCtrl, UICtrl){
     if (input.name !== '' && input.calories !== '') {
       // Add item to data structure (Item Controller's responsibility)
       const newItem = ItemCtrl.addItem(input.name, input.calories);
+      // Add item to UI list
+      UICtrl.addListItem(newItem);
     } else {
       alert("Meal name & calories can't be empty");
     }
+
 
     e.preventDefault();
   }
