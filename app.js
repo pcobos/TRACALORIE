@@ -1,64 +1,82 @@
+import { ItemCtrl } from './item-controller';
+
 // Storage Controller
 // const StrCtrl = (function (){
 
 // })();
 
 // Item Controller
-const ItemCtrl = (function(){
-  // Inside, we should do the item constructor
-  const Item = function(id, name, calories){
-    this.id = id;
-    this.name = name;
-    this.calories = calories;
-  }
-  // Data structure / State
-  const data = {
-    items: [
-      // {id: 0, name:"Hamburger", calories:1200},
-      // {id: 1, name:"French Fries", calories:800},
-      // {id: 2, name:"Soda", calories:950}
-    ],
-    currentItem: null,
-    totalCalories: 0
-  }
+// const ItemCtrl = (function(){
+//   // Inside, we should do the item constructor
+//   const Item = function(id, name, calories){
+//     this.id = id;
+//     this.name = name;
+//     this.calories = calories;
+//   }
+//   // Data structure / State
+//   const data = {
+//     items: [
+//       // {id: 0, name:"Hamburger", calories:1200},
+//       // {id: 1, name:"French Fries", calories:800},
+//       // {id: 2, name:"Soda", calories:950}
+//     ],
+//     currentItem: null,
+//     totalCalories: 0
+//   }
 
-  // Since the previous data is private, we need to return it in order to access it for testing purposes
+//   // Since the previous data is private, we need to return it in order to access it for testing purposes
 
-  // Public methods
-  return {
-    // Following function is for getting the items and passing them to our App controller
-    getItems: function(){
-      return data.items;
-    },
+//   // Public methods
+//   return {
+//     // Following function is for getting the items and passing them to our App controller
+//     getItems: function(){
+//       return data.items;
+//     },
 
-    addItem: function(name, calories){
-      // Add logic for ID
-      let ID;
-      if (data.items.length > 0){
-        ID = data.items[data.items.length - 1].id + 1;
-      } else {
-        ID = 0;
-      }
+//     addItem: function(name, calories){
+//       // Add logic for ID
+//       let ID;
+//       if (data.items.length > 0){
+//         ID = data.items[data.items.length - 1].id + 1;
+//       } else {
+//         ID = 0;
+//       }
       
-      // Convert calories to integer
-      calories = parseInt(calories);
+//       // Convert calories to integer
+//       calories = parseInt(calories);
       
-      // Create new item with info from inputs
-      newMeal = new Item(ID, name, calories); 
+//       // Create new item with info from inputs
+//       newMeal = new Item(ID, name, calories); 
       
-      // Push item to data structure.
-      data.items.push(newMeal);
+//       // Push item to data structure.
+//       data.items.push(newMeal);
 
-      // Returning the new meal for later use in variables
-      return newMeal;
-    },
+//       // Returning the new meal for later use in variables
+//       return newMeal;
+//     },
 
-    // Method to check inner workings of data structure
-    logData: function(){
-      return data;
-    },
-  }
-})();
+//     // Get total calories function
+//     getTotalCalories: () => {
+//       let sum = 0;
+
+//       // Loop through items and add cals
+//       data.items.forEach(function(item){
+//         sum += item.calories;
+//       })
+
+//       // Set total cal in data structure
+//       data.totalCalories = sum;
+
+//       // Return total
+//       return data.totalCalories;
+//     },
+
+//     // Method to check inner workings of data structure
+//     logData: function(){
+//       return data;
+//     },
+//   }
+// })();
 
 // UI Controller
 const UICtrl =  (function(){
@@ -66,7 +84,8 @@ const UICtrl =  (function(){
     itemList: '#item-list',
     addBtn: '.add-btn',
     itemName: '#item-name',
-    itemCalories: '#item-calories'
+    itemCalories: '#item-calories',
+    totalCalories: '.total-calories'
   }
   // Public methods
   return {
@@ -112,6 +131,11 @@ const UICtrl =  (function(){
       document.querySelector(UISelectors.itemList).insertAdjacentElement("beforeend", li);
     },
 
+    // Function for showing total calories in UI
+    showTotalCalories: (totalCalories) => {
+      document.querySelector(UISelectors.totalCalories).textContent = totalCalories;
+    },
+
     //Clear Input function
     clearInput: () => {
       document.querySelector(UISelectors.itemName).value = '';
@@ -151,15 +175,21 @@ const App = (function(ItemCtrl, UICtrl){
     if (input.name !== '' && input.calories !== '') {
       // Add item to data structure (Item Controller's responsibility)
       const newItem = ItemCtrl.addItem(input.name, input.calories);
+
       // Add item to UI list
       UICtrl.addListItem(newItem);
-      // console.log(newItem);
+
+      // Calling ItemCrtl Function for getting total calories
+      const totalCalories = ItemCtrl.getTotalCalories();
+
+      // Calling UICtrl Function to display total calories
+      UICtrl.showTotalCalories(totalCalories);
+
+      // Calling UICtrl function for clearing inputs
+      UICtrl.clearInput();
     } else {
       alert("Meal name & calories can't be empty");
     }
-
-    // Calling UICtrl function for clearing inputs
-    UICtrl.clearInput();
 
     e.preventDefault();
   }
@@ -179,6 +209,11 @@ const App = (function(ItemCtrl, UICtrl){
         UICtrl.populateItemsList(items);
       }
       
+      // Calling ItemCrtl Function for getting total calories
+      const totalCalories = ItemCtrl.getTotalCalories();
+
+      // Calling UICtrl Function to display total calories
+      UICtrl.showTotalCalories(totalCalories);
 
       // Calling load even listeners function
       loadEventListeners();
