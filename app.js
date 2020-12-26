@@ -54,6 +54,7 @@ const ItemCtrl = (function(){
       return newMeal;
     },
 
+    // Get item by ID from data structure
     getItemById: (id) => {
       let found;
       data.items.forEach(function(item){
@@ -64,8 +65,14 @@ const ItemCtrl = (function(){
       return found;
     },
 
+    // Set current item in data structure
     setCurrentItem: (item) => {
       data.currentItem = item;
+    },
+
+    // Getting current item from data structure
+    getCurrentItem: () => {
+      return data.currentItem;
     },
 
     // Get total calories function
@@ -174,6 +181,12 @@ const UICtrl =  (function(){
       document.querySelector(UISelectors.itemCalories).value = '';
     },
 
+    addItemToForm: () => {
+      document.querySelector(UISelectors.itemName).value = ItemCtrl.getCurrentItem().name;
+      document.querySelector(UISelectors.itemCalories).value = ItemCtrl.getCurrentItem().calories;
+      UICtrl.setEditState();
+    },
+
     // Clear UL line
     hideList: () => {
       document.querySelector(UISelectors.itemList).style.display = 'none';
@@ -199,10 +212,10 @@ const App = (function(ItemCtrl, UICtrl){
     document.querySelector(UISelectors.addBtn).addEventListener('click', itemAddSubmit);
 
     // Edit icon event (remember that we need to target the parent element given that the child is still unborn)
-    document.querySelector(UISelectors.itemList).addEventListener('click', itemUpdateSubmit);
+    document.querySelector(UISelectors.itemList).addEventListener('click', itemEditClick);
   }
 
-  // Item add submit function
+  // Item add submit event listener function
   const itemAddSubmit = function(e){
     // Get form input from UI Controller
     const input = UICtrl.getItemInput();
@@ -230,7 +243,8 @@ const App = (function(ItemCtrl, UICtrl){
     e.preventDefault();
   }
 
-  const itemUpdateSubmit = function(e){
+  // Edit item click event listener function
+  const itemEditClick = function(e){
     // Conditional to target the edit button only
     if (e.target.classList.contains('edit-item')){
       // Get item's id (select element that has the id)
@@ -248,9 +262,8 @@ const App = (function(ItemCtrl, UICtrl){
       // Set current item
       ItemCtrl.setCurrentItem(itemToEdit);
 
-      console.log(itemToEdit);
-      // Hide add meal button and show edit/update/back buttons
-      UICtrl.setEditState();
+      // Add Item to form
+      UICtrl.addItemToForm();
     };
     e.preventDefault();
   }
