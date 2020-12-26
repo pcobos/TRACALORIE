@@ -54,12 +54,18 @@ const ItemCtrl = (function(){
       return newMeal;
     },
 
-    getItemToEdit: (id) => {
+    getItemById: (id) => {
+      let found;
       data.items.forEach(function(item){
         if (id == item.id) {
-          console.log(item);
+          found = item;
         }
       });
+      return found;
+    },
+
+    setCurrentItem: (item) => {
+      data.currentItem = item;
     },
 
     // Get total calories function
@@ -237,9 +243,12 @@ const App = (function(ItemCtrl, UICtrl){
       const id = parseInt(listIdArr[1]);
 
       // Get item to edit from Data Structure
-      const itemToEdit = ItemCtrl.getItemToEdit(id);
+      const itemToEdit = ItemCtrl.getItemById(id);
 
-      console.log(id);
+      // Set current item
+      ItemCtrl.setCurrentItem(itemToEdit);
+
+      console.log(itemToEdit);
       // Hide add meal button and show edit/update/back buttons
       UICtrl.setEditState();
     };
