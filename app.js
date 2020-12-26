@@ -54,6 +54,14 @@ const ItemCtrl = (function(){
       return newMeal;
     },
 
+    getItemToEdit: (id) => {
+      data.items.forEach(function(item){
+        if (id == item.id) {
+          console.log(item);
+        }
+      });
+    },
+
     // Get total calories function
     getTotalCalories: () => {
       let sum = 0;
@@ -97,7 +105,7 @@ const UICtrl =  (function(){
       
       // Iterate over each item to use dynamic data on them
       items.forEach(function(item){
-        html += `<li class="collection-item" id="item-${item.id}"><strong>${item.name}:</strong> <em>${item.calories} calories</em><a href="#" class="secondary-content"><i class="fa fa-pencil"></i></a></li>`
+        html += `<li class="collection-item" id="item-${item.id}"><strong>${item.name}:</strong> <em>${item.calories} calories</em><a href="#" class="secondary-content"><i class="edit-item fa fa-pencil"></i></a></li>`
       })
       
       // Insert list items inside HMTL
@@ -126,7 +134,7 @@ const UICtrl =  (function(){
       // add HTML (content inside the li)
       li.innerHTML = `<strong>${item.name}:</strong> <em>${item.calories} calories</em>
       <a href="#" class="secondary-content">
-        <i class="fa fa-pencil"></i>
+        <i class="edit-item fa fa-pencil"></i>
       </a>`
 
       // insert new li element to the end of the itemsList
@@ -145,6 +153,13 @@ const UICtrl =  (function(){
       document.querySelector(UISelectors.updateBtn).style.display = 'none';
       document.querySelector(UISelectors.deleteBtn).style.display = 'none';
       document.querySelector(UISelectors.backBtn).style.display = 'none';
+    },
+
+    setEditState: () => {
+      document.querySelector(UISelectors.addBtn).style.display = 'none';
+      document.querySelector(UISelectors.updateBtn).style.display = 'inline';
+      document.querySelector(UISelectors.deleteBtn).style.display = 'inline';
+      document.querySelector(UISelectors.backBtn).style.display = 'inline';
     },
 
     //Clear Input function
@@ -206,6 +221,28 @@ const App = (function(ItemCtrl, UICtrl){
       alert("Meal name & calories can't be empty");
     }
 
+    e.preventDefault();
+  }
+
+  const itemUpdateSubmit = function(e){
+    // Conditional to target the edit button only
+    if (e.target.classList.contains('edit-item')){
+      // Get item's id (select element that has the id)
+      const listId = e.target.parentNode.parentNode.id;
+
+      // Turn value into array
+      const listIdArr = listId.split('-');
+
+      // Get just the id number
+      const id = parseInt(listIdArr[1]);
+
+      // Get item to edit from Data Structure
+      const itemToEdit = ItemCtrl.getItemToEdit(id);
+
+      console.log(id);
+      // Hide add meal button and show edit/update/back buttons
+      UICtrl.setEditState();
+    };
     e.preventDefault();
   }
 
