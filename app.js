@@ -82,6 +82,9 @@ const UICtrl =  (function(){
   const UISelectors = {
     itemList: '#item-list',
     addBtn: '.add-btn',
+    updateBtn: '.update-btn',
+    deleteBtn: '.delete-btn',
+    backBtn: '.back-btn',
     itemName: '#item-name',
     itemCalories: '#item-calories',
     totalCalories: '.total-calories'
@@ -135,6 +138,15 @@ const UICtrl =  (function(){
       document.querySelector(UISelectors.totalCalories).textContent = totalCalories;
     },
 
+    // Setting initial state
+    setInitialState: () => {
+      UICtrl.clearInput();
+      document.querySelector(UISelectors.addBtn).style.display = 'inline';
+      document.querySelector(UISelectors.updateBtn).style.display = 'none';
+      document.querySelector(UISelectors.deleteBtn).style.display = 'none';
+      document.querySelector(UISelectors.backBtn).style.display = 'none';
+    },
+
     //Clear Input function
     clearInput: () => {
       document.querySelector(UISelectors.itemName).value = '';
@@ -164,6 +176,9 @@ const App = (function(ItemCtrl, UICtrl){
     
     // Add item event
     document.querySelector(UISelectors.addBtn).addEventListener('click', itemAddSubmit);
+
+    // Edit icon event (remember that we need to target the parent element given that the child is still unborn)
+    document.querySelector(UISelectors.itemList).addEventListener('click', itemUpdateSubmit);
   }
 
   // Item add submit function
@@ -199,6 +214,9 @@ const App = (function(ItemCtrl, UICtrl){
   // Basically, init contains anything that we need to run right away when the app loads
   return {
     init: function(){
+      // Setting initial state (everything is clean)
+      UICtrl.setInitialState();
+
       // Fetching items from Data Structure
       const items = ItemCtrl.getItems();
 
