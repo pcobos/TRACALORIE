@@ -138,12 +138,13 @@ const UICtrl =  (function(){
       document.querySelector(UISelectors.itemList).style.display = 'block';
       // create a new li
       const li = document.createElement('li');
+
       // add className to li item
       li.className = 'collection-item';
 
       // add id to li item
       li.id = `item-${item.id}`;
-
+      
       // add HTML (content inside the li)
       li.innerHTML = `<strong>${item.name}:</strong> <em>${item.calories} calories</em>
       <a href="#" class="secondary-content">
@@ -173,6 +174,14 @@ const UICtrl =  (function(){
       document.querySelector(UISelectors.updateBtn).style.display = 'inline';
       document.querySelector(UISelectors.deleteBtn).style.display = 'inline';
       document.querySelector(UISelectors.backBtn).style.display = 'inline';
+      document.addEventListener('keypress', UICtrl.disableEnter);
+    },
+
+    disableEnter: (e) => {
+      if(e.keyCode === 13 || e.which === 13){
+        e.preventDefault();
+        return false;
+      }
     },
 
     //Clear Input function
@@ -213,6 +222,9 @@ const App = (function(ItemCtrl, UICtrl){
 
     // Edit icon event (remember that we need to target the parent element given that the child is still unborn)
     document.querySelector(UISelectors.itemList).addEventListener('click', itemEditClick);
+
+    // Item update submit event listener
+    document.querySelector(UISelectors.updateBtn).addEventListener('click', itemUpdateSubmit);
   }
 
   // Item add submit event listener function
@@ -267,6 +279,13 @@ const App = (function(ItemCtrl, UICtrl){
     };
     e.preventDefault();
   }
+
+  // Item update submit event listener function
+  const itemUpdateSubmit = function(e){
+    console.log("Update");
+    e.preventDefault();
+  }
+
 
   // Public Methods
   // Main app controller will return one single function called init
