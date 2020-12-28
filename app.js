@@ -91,6 +91,20 @@ const ItemCtrl = (function(){
       return data.totalCalories;
     },
 
+    // Update Item function
+    updateItem: (name, calories) => {
+      let found;
+      // Iterate over items to find the item to be changed inside out data structure and reassign the values
+      data.items.forEach(function(item){
+        if(data.currentItem.id === item.id){
+          item.name = name;
+          item.calories = parseInt(calories);
+          found = item;
+        }
+      })
+      return found;
+    },
+
     // Method to check inner workings of data structure
     logData: function(){
       return data;
@@ -177,6 +191,7 @@ const UICtrl =  (function(){
       document.addEventListener('keypress', UICtrl.disableEnter);
     },
 
+    // Disable Enter Key
     disableEnter: (e) => {
       if(e.keyCode === 13 || e.which === 13){
         e.preventDefault();
@@ -282,7 +297,12 @@ const App = (function(ItemCtrl, UICtrl){
 
   // Item update submit event listener function
   const itemUpdateSubmit = function(e){
-    console.log("Update");
+    // To update the item, first we get the input
+    const input = UICtrl.getItemInput();
+
+    // Then we call our updateItem function from ItemCtrl (takes two parameters, name and calories)
+    const updatedItem = ItemCtrl.updateItem(input.name, input.calories);
+
     e.preventDefault();
   }
 
