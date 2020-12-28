@@ -185,7 +185,7 @@ const UICtrl =  (function(){
           li.innerHTML = `<strong>${item.name}:</strong> <em>${item.calories} calories</em>
           <a href="#" class="secondary-content">
             <i class="edit-item fa fa-pencil"></i>
-          </a>`
+          </a>`;
         }
       })
     },
@@ -327,6 +327,16 @@ const App = (function(ItemCtrl, UICtrl){
 
     // Update UI with new name/calories
     UICtrl.updateListItem(updatedItem);
+
+    // Update Total Calories
+    // Calling ItemCrtl Function for getting total calories
+    const totalCalories = ItemCtrl.getTotalCalories();
+
+    // Calling UICtrl Function to display total calories
+    UICtrl.showTotalCalories(totalCalories);
+
+    // Clear input and display add meal button again (initial state)
+    UICtrl.setInitialState();
 
     e.preventDefault();
   }
