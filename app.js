@@ -262,6 +262,9 @@ const App = (function(ItemCtrl, UICtrl){
 
     // Item update submit event listener
     document.querySelector(UISelectors.updateBtn).addEventListener('click', itemUpdateSubmit);
+
+    // Back button event listener
+    document.querySelector(UISelectors.backBtn).addEventListener('click', UICtrl.setInitialState);
   }
 
   // Item add submit event listener function
