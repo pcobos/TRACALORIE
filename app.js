@@ -116,6 +116,7 @@ const ItemCtrl = (function(){
 const UICtrl =  (function(){
   const UISelectors = {
     itemList: '#item-list',
+    listItems: '#item-list li',
     addBtn: '.add-btn',
     updateBtn: '.update-btn',
     deleteBtn: '.delete-btn',
@@ -169,6 +170,26 @@ const UICtrl =  (function(){
       document.querySelector(UISelectors.itemList).insertAdjacentElement("beforeend", li);
     },
 
+    updateListItem: (item) => {
+      // Select ALL li elements inside #item-list (This returns a node list)
+      let listItems = document.querySelectorAll(UISelectors.listItems);
+
+      // Turn nodelist into array
+      listItems = Array.from(listItems);
+
+      let itemId;
+
+      listItems.forEach(function(li){
+        itemId = parseInt(li.id.split('-')[1]);
+        if (item.id === itemId){
+          li.innerHTML = `<strong>${item.name}:</strong> <em>${item.calories} calories</em>
+          <a href="#" class="secondary-content">
+            <i class="edit-item fa fa-pencil"></i>
+          </a>`
+        }
+      })
+    },
+
     // Function for showing total calories in UI
     showTotalCalories: (totalCalories) => {
       document.querySelector(UISelectors.totalCalories).textContent = totalCalories;
@@ -183,6 +204,7 @@ const UICtrl =  (function(){
       document.querySelector(UISelectors.backBtn).style.display = 'none';
     },
 
+    // Setting edit state function (click on edit)
     setEditState: () => {
       document.querySelector(UISelectors.addBtn).style.display = 'none';
       document.querySelector(UISelectors.updateBtn).style.display = 'inline';
@@ -302,6 +324,9 @@ const App = (function(ItemCtrl, UICtrl){
 
     // Then we call our updateItem function from ItemCtrl (takes two parameters, name and calories)
     const updatedItem = ItemCtrl.updateItem(input.name, input.calories);
+
+    // Update UI with new name/calories
+    UICtrl.updateListItem(updatedItem);
 
     e.preventDefault();
   }
