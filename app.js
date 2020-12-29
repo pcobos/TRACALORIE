@@ -192,6 +192,7 @@ const UICtrl =  (function(){
 
       let itemId;
 
+      // Iterate over li elements
       listItems.forEach(function(li){
         itemId = parseInt(li.id.split('-')[1]);
         if (item.id === itemId){
@@ -201,6 +202,31 @@ const UICtrl =  (function(){
           </a>`;
         }
       })
+    },
+
+    deleteListItem: (id) => {
+      // Selected all <li> elements inside <ul> #item-list
+      let listItems = document.querySelectorAll(UISelectors.listItems);
+
+      // Turned the node list into an array so that we can iterate over it
+      listItems = Array.from(listItems);
+
+      // Variable for storing the element's ids
+      let itemId;
+
+      // Variable for storing the found element
+      let found;
+
+      // iterating over the <li> elements to identify the correct one and storing it in found variable
+      listItems.forEach(function(li){
+        itemId = parseInt(li.id.split('-')[1]);
+        if (id === itemId){
+          found = li;
+        }
+      })
+
+      // removing the found element
+      found.remove();
     },
 
     // Function for showing total calories in UI
@@ -367,6 +393,12 @@ const App = (function(ItemCtrl, UICtrl){
 
     // Then call deleteItem method with the currentItem id as an argument
     ItemCtrl.deleteItem(currentItem.id);
+
+    // Delete Item from list
+    // Basically we have to call the UICtrl
+    // Method can be called Delete list item
+    // Said method will remove the selected child from the list 
+    UICtrl.deleteListItem(currentItem.id);
 
     // Calling ItemCrtl Function for getting total calories
     const totalCalories = ItemCtrl.getTotalCalories();
