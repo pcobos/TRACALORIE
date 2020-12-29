@@ -105,6 +105,19 @@ const ItemCtrl = (function(){
       return found;
     },
 
+    deleteItem: (id) => {
+      // Map all ids
+      const ids = data.items.map(function(item){
+        return item.id;
+      })
+
+      // Get the index of the selected item through it's id
+      const index = ids.indexOf(id);
+
+      // Delete the item from the array through it's index
+      data.items.splice(index, 1);
+    },
+
     // Method to check inner workings of data structure
     logData: function(){
       return data;
@@ -263,6 +276,9 @@ const App = (function(ItemCtrl, UICtrl){
     // Item update submit event listener
     document.querySelector(UISelectors.updateBtn).addEventListener('click', itemUpdateSubmit);
 
+    // Delete item event listener
+    document.querySelector(UISelectors.deleteBtn).addEventListener('click', itemDeleteSubmit);
+
     // Back button event listener
     document.querySelector(UISelectors.backBtn).addEventListener('click', UICtrl.setInitialState);
   }
@@ -344,6 +360,25 @@ const App = (function(ItemCtrl, UICtrl){
     e.preventDefault();
   }
 
+  const itemDeleteSubmit = function(e){
+
+    // First we get the current item
+    const currentItem = ItemCtrl.getCurrentItem();
+
+    // Then call deleteItem method with the currentItem id as an argument
+    ItemCtrl.deleteItem(currentItem.id);
+
+    // Calling ItemCrtl Function for getting total calories
+    const totalCalories = ItemCtrl.getTotalCalories();
+
+    // Calling UICtrl Function to display total calories
+    UICtrl.showTotalCalories(totalCalories);
+
+    // Clear input and display add meal button again (initial state)
+    UICtrl.setInitialState(); 
+
+    e.preventDefault();
+  }
 
   // Public Methods
   // Main app controller will return one single function called init
