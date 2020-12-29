@@ -118,6 +118,10 @@ const ItemCtrl = (function(){
       data.items.splice(index, 1);
     },
 
+    deleteAllItems: () => {
+      data.items = [];
+    },
+
     // Method to check inner workings of data structure
     logData: function(){
       return data;
@@ -134,6 +138,7 @@ const UICtrl =  (function(){
     updateBtn: '.update-btn',
     deleteBtn: '.delete-btn',
     backBtn: '.back-btn',
+    clearBtn: '.clear-btn',
     itemName: '#item-name',
     itemCalories: '#item-calories',
     totalCalories: '.total-calories'
@@ -229,6 +234,19 @@ const UICtrl =  (function(){
       found.remove();
     },
 
+    clearListItems: () => {
+      // Select all <li> elements inside <ul>
+      let listItems = document.querySelectorAll(UISelectors.listItems);
+      
+      // Turn node list into array
+      listItems = Array.from(listItems);
+
+      // Iterate and remove items
+      listItems.forEach(function(item){
+        item.remove();
+      })
+    },
+
     // Function for showing total calories in UI
     showTotalCalories: (totalCalories) => {
       document.querySelector(UISelectors.totalCalories).textContent = totalCalories;
@@ -307,6 +325,9 @@ const App = (function(ItemCtrl, UICtrl){
 
     // Back button event listener
     document.querySelector(UISelectors.backBtn).addEventListener('click', UICtrl.setInitialState);
+
+    // Clear button event listener
+    document.querySelector(UISelectors.clearBtn).addEventListener('click', clearAllItemsClick);
   }
 
   // Item add submit event listener function
@@ -386,6 +407,7 @@ const App = (function(ItemCtrl, UICtrl){
     e.preventDefault();
   }
 
+  // Delete Item Submit event listener function
   const itemDeleteSubmit = function(e){
 
     // First we get the current item
@@ -408,6 +430,28 @@ const App = (function(ItemCtrl, UICtrl){
 
     // Clear input and display add meal button again (initial state)
     UICtrl.setInitialState(); 
+
+    e.preventDefault();
+  }
+
+  // Clear all items click event listener function
+  const clearAllItemsClick = function(e){
+    // Delete all items from data structure
+    ItemCtrl.deleteAllItems();
+    // Delete all elements from the UI
+    UICtrl.clearListItems();
+    // Update Calories
+    // Calling ItemCrtl Function for getting total calories
+    const totalCalories = ItemCtrl.getTotalCalories();
+
+    // Calling UICtrl Function to display total calories
+    UICtrl.showTotalCalories(totalCalories);
+
+    // Clear Input
+    UICtrl.setInitialState();
+
+    // Hide list
+    UICtrl.hideList();
 
     e.preventDefault();
   }
