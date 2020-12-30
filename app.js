@@ -14,7 +14,7 @@ const StrCtrl = (function (){
         // convert items array to string
         localStorage.setItem("items", JSON.stringify(items));
       } else {
-        // get items
+        // get items (remember to parse it since it is retrieved as a string)
         items = JSON.parse(localStorage.getItem('items'));
         // push new item to array
         items.push(item);
@@ -22,6 +22,11 @@ const StrCtrl = (function (){
         localStorage.setItem("items", JSON.stringify(items));
         console.log(items);
       }
+    },
+    retrieveItems: () => {
+      // Retrieve from local storage (Parse into an object)
+      let items = JSON.parse(localStorage.getItem("items"));
+      return items;
     }
   }
 })();
@@ -36,11 +41,12 @@ const ItemCtrl = (function(){
   }
   // Data structure / State
   const data = {
-    items: [
-      // {id: 0, name:"Hamburger", calories:1200},
-      // {id: 1, name:"French Fries", calories:800},
-      // {id: 2, name:"Soda", calories:950}
-    ],
+    // items: [
+    //   // {id: 0, name:"Hamburger", calories:1200},
+    //   // {id: 1, name:"French Fries", calories:800},
+    //   // {id: 2, name:"Soda", calories:950}
+    // ],
+    items: StrCtrl.retrieveItems(), 
     currentItem: null,
     totalCalories: 0
   }
