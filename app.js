@@ -1,8 +1,30 @@
 
 // Storage Controller
-// const StrCtrl = (function (){
-
-// })();
+const StrCtrl = (function (){
+  
+  // Public methods
+  return {
+    storeItem: (item) => {
+      let items;
+      // Check if items is empty
+      if (localStorage.getItem("items") === null){
+        // If so, create new array, push items to array
+        items = [];
+        items.push(item);
+        // convert items array to string
+        localStorage.setItem("items", JSON.stringify(items));
+      } else {
+        // get items
+        items = JSON.parse(localStorage.getItem('items'));
+        // push new item to array
+        items.push(item);
+        // store again
+        localStorage.setItem("items", JSON.stringify(items));
+        console.log(items);
+      }
+    }
+  }
+})();
 
 // Item Controller
 const ItemCtrl = (function(){
@@ -303,7 +325,7 @@ const UICtrl =  (function(){
 })();
 
 // App Controller
-const App = (function(ItemCtrl, UICtrl){
+const App = (function(ItemCtrl, StrCtrl, UICtrl){
 
     // Load event listeners
   const loadEventListeners = function(){
@@ -342,6 +364,9 @@ const App = (function(ItemCtrl, UICtrl){
 
       // Add item to UI list
       UICtrl.addListItem(newItem);
+
+      // Store Item in local storage
+      StrCtrl.storeItem(newItem);
 
       // Calling ItemCrtl Function for getting total calories
       const totalCalories = ItemCtrl.getTotalCalories();
@@ -487,7 +512,7 @@ const App = (function(ItemCtrl, UICtrl){
   }
 
 
-})(ItemCtrl, UICtrl);
+})(ItemCtrl, StrCtrl, UICtrl);
 
 // First thing to initialize the controllers is to use a IIFE Function (Immediately Invoked Function Expressions)
  
