@@ -66,9 +66,20 @@ const StrCtrl = (function (){
 
       localStorage.setItem("items", JSON.stringify(items));
       console.log(items);
-    }
+    },
 
     // Clear all items from local storage
+    clearItemsLocalStorage: () => {
+      // Get items and parse them into object
+      let items = JSON.parse(localStorage.getItem("items"));
+
+      // Set items array to an empty one
+      items = [];
+
+      // Store the empty array into local storage
+      localStorage.setItem("items", JSON.stringify(items));
+      console.log(items);
+    }
   }
 })();
 
@@ -512,8 +523,13 @@ const App = (function(ItemCtrl, StrCtrl, UICtrl){
   const clearAllItemsClick = function(e){
     // Delete all items from data structure
     ItemCtrl.deleteAllItems();
+
     // Delete all elements from the UI
     UICtrl.clearListItems();
+
+    // Delete all items from the local storage
+    StrCtrl.clearItemsLocalStorage();
+
     // Update Calories
     // Calling ItemCrtl Function for getting total calories
     const totalCalories = ItemCtrl.getTotalCalories();
