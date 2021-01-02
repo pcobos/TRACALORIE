@@ -32,7 +32,26 @@ const StrCtrl = (function (){
         items = JSON.parse(localStorage.getItem("items"));
       }
       return items;
+    },
+
+    // Update items in local storage
+    updateItemLocalStorage: (updatedItem) => {
+      // Retrieving items from local storage and parsing them into an object
+      let items = JSON.parse(localStorage.getItem("items"));
+
+      // Iterating over the items with their index
+      items.forEach(function(item, index){
+        if (updatedItem.id === item.id){
+          // Removing the item based on it's index and updating it with the updated one
+          items.splice(index, 1, updatedItem);
+        }
+      })
+
+      // Storing items again in local storage
+      localStorage.setItem("items", JSON.stringify(items));
+      console.log(items);
     }
+    // Delete items from local storage
   }
 })();
 
@@ -127,7 +146,7 @@ const ItemCtrl = (function(){
     // Update Item function
     updateItem: (name, calories) => {
       let found;
-      // Iterate over items to find the item to be changed inside out data structure and reassign the values
+      // Iterate over items to find the item to be changed inside our data structure and reassign the values
       data.items.forEach(function(item){
         if(data.currentItem.id === item.id){
           item.name = name;
@@ -429,6 +448,9 @@ const App = (function(ItemCtrl, StrCtrl, UICtrl){
 
     // Update UI with new name/calories
     UICtrl.updateListItem(updatedItem);
+
+    // Update local storage
+    StrCtrl.updateItemLocalStorage(updatedItem);
 
     // Update Total Calories
     // Calling ItemCrtl Function for getting total calories
