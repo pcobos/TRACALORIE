@@ -23,9 +23,14 @@ const StrCtrl = (function (){
         console.log(items);
       }
     },
-    retrieveItemsFromStorage: () => {
-      // Retrieve from local storage (Parse into an object)
-      let items = JSON.parse(localStorage.getItem("items"));
+    getItemsFromStorage: () => {
+      // Get from local storage (Parse into an object)
+      let items;
+      if (localStorage.getItem("items") ===  null){
+        items = [];
+      } else {
+        items = JSON.parse(localStorage.getItem("items"));
+      }
       return items;
     }
   }
@@ -46,7 +51,7 @@ const ItemCtrl = (function(){
     //   // {id: 1, name:"French Fries", calories:800},
     //   // {id: 2, name:"Soda", calories:950}
     // ],
-    items: StrCtrl.retrieveItemsFromStorage(), 
+    items: StrCtrl.getItemsFromStorage(), 
     currentItem: null,
     totalCalories: 0
   }
