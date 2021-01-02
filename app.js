@@ -23,6 +23,8 @@ const StrCtrl = (function (){
         console.log(items);
       }
     },
+
+    // Retreive items from the local storage
     getItemsFromStorage: () => {
       // Get from local storage (Parse into an object)
       let items;
@@ -50,8 +52,23 @@ const StrCtrl = (function (){
       // Storing items again in local storage
       localStorage.setItem("items", JSON.stringify(items));
       console.log(items);
-    }
+    },
+
     // Delete items from local storage
+    deleteItemLocalStorage: (id) => {
+      let items = JSON.parse(localStorage.getItem("items"));
+
+      items.forEach(function(item, index){
+        if (id === item.id) {
+          items.splice(index, 1);
+        }
+      })
+
+      localStorage.setItem("items", JSON.stringify(items));
+      console.log(items);
+    }
+
+    // Clear all items from local storage
   }
 })();
 
@@ -474,11 +491,10 @@ const App = (function(ItemCtrl, StrCtrl, UICtrl){
     // Then call deleteItem method with the currentItem id as an argument
     ItemCtrl.deleteItem(currentItem.id);
 
-    // Delete Item from list
-    // Basically we have to call the UICtrl
-    // Method can be called Delete list item
-    // Said method will remove the selected child from the list 
+    // Delete Item from UIlist
     UICtrl.deleteListItem(currentItem.id);
+
+    StrCtrl.deleteItemLocalStorage(currentItem.id)
 
     // Calling ItemCrtl Function for getting total calories
     const totalCalories = ItemCtrl.getTotalCalories();
