@@ -23,7 +23,7 @@ const StrCtrl = (function (){
         console.log(items);
       }
     },
-    retrieveItems: () => {
+    retrieveItemsFromStorage: () => {
       // Retrieve from local storage (Parse into an object)
       let items = JSON.parse(localStorage.getItem("items"));
       return items;
@@ -46,7 +46,7 @@ const ItemCtrl = (function(){
     //   // {id: 1, name:"French Fries", calories:800},
     //   // {id: 2, name:"Soda", calories:950}
     // ],
-    items: StrCtrl.retrieveItems(), 
+    items: StrCtrl.retrieveItemsFromStorage(), 
     currentItem: null,
     totalCalories: 0
   }
