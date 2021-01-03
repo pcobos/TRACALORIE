@@ -70,15 +70,7 @@ const StrCtrl = (function (){
 
     // Clear all items from local storage
     clearItemsLocalStorage: () => {
-      // Get items and parse them into object
-      let items = JSON.parse(localStorage.getItem("items"));
-
-      // Set items array to an empty one
-      items = [];
-
-      // Store the empty array into local storage
-      localStorage.setItem("items", JSON.stringify(items));
-      console.log(items);
+     localStorage.removeItem("items");
     }
   }
 })();
